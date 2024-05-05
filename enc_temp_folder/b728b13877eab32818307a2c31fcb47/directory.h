@@ -45,42 +45,15 @@ public:
 		}
 		file.close();
 	}
+	static void Delete(int num)
+	{
+
+	}
 	static void clear()
 	{
 		ofstream file;
 		file.open("memory.txt");
 		file << "";
-		file.close();
-	}
-	static void find(int num, string info)
-	{
-		directory examp;
-		ifstream file;
-		file.open("memory.txt", ifstream::in);
-		while (file.read((char*)&examp, sizeof(directory)))
-		{
-			switch (num)
-			{
-			case 1:
-				if (examp.CompanyName.find(info) != string::npos) examp.print();
-				break;
-			case 2:
-				if (examp.OwnerName.find(info) != string::npos) examp.print();
-				break;
-			case 3:
-				if (examp.PhoneNumber.find(info) != string::npos) examp.print();
-				break;
-			case 4:
-				if (examp.Address.find(info) != string::npos) examp.print();
-				break;
-			case 5:
-				if (examp.KindOfActivity.find(info) != string::npos) examp.print();
-				break;
-			default:
-				cout << "Несуществующий параметр поиска!\n";
-				break;
-			}
-		}
 		file.close();
 	}
 };
