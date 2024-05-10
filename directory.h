@@ -15,10 +15,20 @@ private:
 	string KindOfActivity;
 	void compress() const
 	{
-		ofstream file;
-		file.open("memory.txt", ofstream::app);
-		file.write((char*)this, sizeof(directory));
-		file.close();
+		ofstream file("memory.txt", ofstream::app);
+		if (file.is_open())
+		{
+			file << CompanyName.c_str() << ' ';
+			file << OwnerName.c_str() << ' ';
+			file << PhoneNumber.c_str() << ' ';
+			file << Address.c_str() << ' ';
+			file << KindOfActivity.c_str() << '\n';
+			file.close();
+		}
+		else
+		{
+			throw runtime_error("Unable file");
+		}
 	}
 	const void print()
 	{
@@ -26,24 +36,21 @@ private:
 		cout << "Владелец: " << OwnerName << endl;
 		cout << "Телефон: " << PhoneNumber << endl;
 		cout << "Адрес: " << Address << endl;
-		cout << "Род деятельности: " << KindOfActivity << endl;
+		cout << "Род деятельности: " << KindOfActivity << endl << endl;
 	}
 	directory() {}
 public:
+	enum SearchType
+	{
+		CName = 1,
+		OName,
+		PNumber,
+		Add,
+		KindOfAct
+	};
 	directory(string CompanyName, string OwnerName, string PhoneNumber, string Address, string KindOfActivity) : CompanyName{ CompanyName }, OwnerName{ OwnerName }, PhoneNumber{ PhoneNumber }, Address{ Address }, KindOfActivity{ KindOfActivity }
 	{
 		compress();
-	}
-	static const void show()
-	{
-		directory examp;
-		ifstream file;
-		file.open("memory.txt", ifstream::in);
-		while (file.read((char*)&examp, sizeof(directory)))
-		{
-			examp.print();
-		}
-		file.close();
 	}
 	static void clear()
 	{
@@ -52,35 +59,58 @@ public:
 		file << "";
 		file.close();
 	}
-	static void find(int num, string info)
+	static void find(SearchType num, string info)
 	{
 		directory examp;
-		ifstream file;
-		file.open("memory.txt", ifstream::in);
-		while (file.read((char*)&examp, sizeof(directory)))
+		ifstream file("memory.txt");
+		if (file.is_open())
 		{
-			switch (num)
+			while (file >> examp.CompanyName >> examp.OwnerName >> examp.PhoneNumber >> examp.Address >> examp.KindOfActivity)
 			{
-			case 1:
-				if (examp.CompanyName.find(info) != string::npos) examp.print();
-				break;
-			case 2:
-				if (examp.OwnerName.find(info) != string::npos) examp.print();
-				break;
-			case 3:
-				if (examp.PhoneNumber.find(info) != string::npos) examp.print();
-				break;
-			case 4:
-				if (examp.Address.find(info) != string::npos) examp.print();
-				break;
-			case 5:
-				if (examp.KindOfActivity.find(info) != string::npos) examp.print();
-				break;
-			default:
-				cout << "Несуществующий параметр поиска!\n";
-				break;
+				switch (num)
+				{
+				case 1:
+					if (examp.CompanyName.find(info) != string::npos) examp.print();
+					break;
+				case 2:
+					if (examp.OwnerName.find(info) != string::npos) examp.print();
+					break;
+				case 3:
+					if (examp.PhoneNumber.find(info) != string::npos) examp.print();
+					break;
+				case 4:
+					if (examp.Address.find(info) != string::npos) examp.print();
+					break;
+				case 5:
+					if (examp.KindOfActivity.find(info) != string::npos) examp.print();
+					break;
+				default:
+					cout << "Несуществующий параметр поиска!\n";
+					break;
+				}
 			}
+			file.close();
 		}
-		file.close();
+		else
+		{
+			throw runtime_error("Unable file");
+		}
+	}
+	static const void show()
+	{
+		directory examp;
+		ifstream file("memory.txt");
+		if (file.is_open())
+		{
+			while (file >> examp.CompanyName >> examp.OwnerName >> examp.PhoneNumber >> examp.Address >> examp.KindOfActivity)
+			{
+				examp.print();
+			}
+			file.close();
+		}
+		else
+		{
+			throw runtime_error("Unable file");
+		}
 	}
 };
