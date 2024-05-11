@@ -8,6 +8,10 @@ using namespace std;
 class directory
 {
 private:
+	int size = 10;
+	shared_ptr<int[]> ptr{ new int[size] };//я пон€л зачем нужны умные указатели, но в моей программе изначально не выдел€лась динамическа€ пам€ть, поэтому мне сейчас негде их использовать
+	shared_ptr<int> jtr{ new int };
+
 	string CompanyName;
 	string OwnerName;
 	string PhoneNumber;
